@@ -53,16 +53,24 @@ Versiones base para este ejercicio:
 - pnpm **10 o superior**.
 - Docker Engine **24 o superior**, o Docker Desktop con el motor iniciado.
 - Puerto **27017** libre para MongoDB y **3000** para la API.
+- Git para clonar el repositorio.
 - curl y, opcionalmente, Bruno para enviar solicitudes.
 
 ```bash
 node --version
 pnpm --version
 docker version
+```
+
+Clona el repositorio, entra al directorio e instala las dependencias:
+
+```bash
+git clone https://github.com/elfotografo007/ucp-bd2-template-2026-2.git
+cd ucp-bd2-template-2026-2
 pnpm install
 ```
 
-Los comandos se ejecutan desde la raíz del proyecto. Los ejemplos de terminal usan Bash o Zsh.
+A partir de aquí, los comandos se ejecutan desde la raíz del proyecto. Los ejemplos de terminal usan Bash o Zsh.
 
 ## 2. Lanzar MongoDB Community en Docker
 
