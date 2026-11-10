@@ -72,15 +72,17 @@ pnpm install
 
 A partir de aquí, los comandos se ejecutan desde la raíz del proyecto. Los ejemplos de terminal usan Bash o Zsh.
 
-## 2. Lanzar MongoDB Community 9 en Docker
+## 2. Lanzar MongoDB Community en Docker
 
 ```bash
 docker run --detach \
   --name ucp-mongo \
   --publish 127.0.0.1:27017:27017 \
   --volume ucp-mongo-data:/data/db \
-  mongodb/mongodb-community-server:9.0
+  mongodb/mongodb-community-server:9.0.4-ubuntu2204
 ```
+
+Usamos la imagen de MongoDB `mongodb/mongodb-community-server:9.0.4-ubuntu2204`. Fijamos MongoDB 9.0.4 con la variante Ubuntu 22.04. Esta etiqueta corresponde a la imagen publicada como `latest` al 9 de noviembre de 2026; el repositorio no publica una etiqueta `9.0.4` sin sufijo.
 
 El puerto 27017 del contenedor queda disponible en el 27017 de tu máquina. El volumen conserva los datos entre reinicios. Este entorno de práctica no usa autenticación y solo se publica en la interfaz local.
 
