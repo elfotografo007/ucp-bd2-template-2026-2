@@ -2,7 +2,6 @@
 // Iniciar el servidor: pnpm exec node --watch server.cjs
 
 const express = require('express');
-const { ObjectId } = require('mongodb');
 
 const app = express();
 const PORT = process.env.PORT || 3000;

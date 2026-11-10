@@ -126,7 +126,7 @@ PORT=3000
 Agrega junto a los imports:
 
 ```js
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 ```
 
 ## 6. Listar cursos sin paginación
