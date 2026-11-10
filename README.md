@@ -72,14 +72,14 @@ pnpm install
 
 A partir de aquí, los comandos se ejecutan desde la raíz del proyecto. Los ejemplos de terminal usan Bash o Zsh.
 
-## 2. Lanzar MongoDB Community en Docker
+## 2. Lanzar MongoDB Community 9 en Docker
 
 ```bash
 docker run --detach \
   --name ucp-mongo \
   --publish 127.0.0.1:27017:27017 \
   --volume ucp-mongo-data:/data/db \
-  mongodb/mongodb-community-server:8.0-ubi8
+  mongodb/mongodb-community-server:9.0
 ```
 
 El puerto 27017 del contenedor queda disponible en el 27017 de tu máquina. El volumen conserva los datos entre reinicios. Este entorno de práctica no usa autenticación y solo se publica en la interfaz local.
@@ -268,8 +268,8 @@ Conserva `module.exports = app` y el arranque dentro de `require.main === module
 ## Referencias
 
 - [Express 5: instalación (español)](https://expressjs.com/es/5x/starter/installing/)
-- [MongoDB Community en Docker](https://www.mongodb.com/docs/v8.0/tutorial/install-mongodb-community-with-docker/)
+- [Imagen oficial de MongoDB Community en Docker](https://hub.docker.com/r/mongodb/mongodb-community-server/tags)
 - [MongoDB: insertar documentos con el driver de Node.js (español)](https://www.mongodb.com/es/docs/drivers/node/current/crud/insert/)
-- [Driver oficial: operaciones CRUD](https://www.mongodb.com/docs/drivers/node/current/reference/quick-reference/)
+- [MongoDB: referencia rápida del driver de Node.js (español)](https://www.mongodb.com/es/docs/drivers/node/current/reference/quick-reference/)
 - [Node.js: carga nativa de archivos de entorno](https://nodejs.org/api/cli.html#--env-file-if-existsfile)
 - [Variables de Bruno](https://blog.usebruno.com/manage-variables)
