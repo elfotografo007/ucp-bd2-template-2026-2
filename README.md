@@ -129,10 +129,6 @@ Agrega junto a los imports:
 const { MongoClient } = require('mongodb');
 ```
 
-No cambies el bloque de arranque al final del archivo. En cada endpoint crearemos un `MongoClient`, abriremos la conexión y elegiremos la base de datos y la colección. Al terminar, cerraremos la conexión con `finally`, tanto si la operación funciona como si falla.
-
-MongoDB crea la base y la colección al insertar el primer documento.
-
 ## 6. Listar cursos sin paginación
 
 Reemplaza el handler de `GET /courses`:
