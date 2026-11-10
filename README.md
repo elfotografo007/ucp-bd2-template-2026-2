@@ -43,7 +43,7 @@ Envía `Content-Type: application/json` en POST y PUT. Las respuestas tienen con
 
 POST recibe `name`, `description` y opcionalmente `students`. PUT recibe `name`, `description` y `students`, y reemplaza esos tres campos manteniendo el ID. Para agregar, modificar o eliminar estudiantes, envía el arreglo completo actualizado mediante PUT.
 
-En PUT, los datos inválidos producen `400` con un objeto JSON `{ "message": "Explicación del error" }`. Los errores `404` usan la misma estructura. El texto del mensaje es libre, pero no debe estar vacío. Un PUT inválido no modifica los datos guardados. Para esta primera práctica, POST asume que recibe datos con el formato del ejemplo y no incluye validaciones.
+Para esta práctica, POST y PUT asumen que reciben datos con el formato del ejemplo; no se exigen validaciones de entrada. Los errores `404` devuelven un objeto JSON `{ "message": "Explicación del error" }`. El texto del mensaje es libre, pero no debe estar vacío.
 
 ## 1. Requisitos
 
@@ -251,13 +251,15 @@ PUT incluye un estudiante modificado. Cambia `students` a `[]` para practicar su
 
 ## 10. Completar el ejercicio y ejecutar las pruebas
 
-Implementa consultar por ID, actualizar y eliminar usando `findOne`, `updateOne` (con `$set`) y `deleteOne`. Importa `ObjectId` desde `mongodb` para buscar por `{ _id: new ObjectId(req.params.id) }`. Comprueba primero `ObjectId.isValid(req.params.id)` y responde `404` cuando el ID no sea válido o el curso no exista. No modifiques `_id` en PUT. Devuelve `id` como string en todas las respuestas de cursos.
+Implementa consultar por ID, actualizar y eliminar usando `findOne`, `updateOne` (con `$set`) y `deleteOne`. Importa `ObjectId` desde `mongodb` para buscar por `{ _id: new ObjectId(req.params.id) }`. Para este ejercicio asumimos IDs con formato válido. Responde `404` cuando el curso no exista. No modifiques `_id` en PUT. Devuelve `id` como string en todas las respuestas de cursos.
 
 ```bash
 pnpm test
 ```
 
-Las 20 pruebas usan `node:test`, Supertest y MongoDB real. No necesitas iniciar la API aparte, pero MongoDB debe estar funcionando. Cada ejecución crea una base temporal `ucp_courses_test_<UUID>`, vacía solo su colección antes de cada caso y elimina esa base al terminar. Durante las pruebas, `MONGODB_DB` apunta a esa base temporal y `MONGODB_URI` al servidor de pruebas. Al terminar se restauran ambas variables; no se borra la base del ejercicio. Si necesitas otro servidor para pruebas, configura `MONGODB_TEST_URI`; de lo contrario se usa `MONGODB_URI` o la conexión local.
+Las pruebas de listado y consulta por ID insertan documentos directamente en MongoDB y comparan la respuesta completa, incluidos el `id` como string y los estudiantes embebidos, sin depender de POST.
+
+Las 11 pruebas usan `node:test`, Supertest y MongoDB real. No necesitas iniciar la API aparte, pero MongoDB debe estar funcionando. Cada ejecución crea una base temporal `ucp_courses_test_<UUID>`, vacía solo su colección antes de cada caso y elimina esa base al terminar. Durante las pruebas, `MONGODB_DB` apunta a esa base temporal y `MONGODB_URI` al servidor de pruebas. Al terminar se restauran ambas variables; no se borra la base del ejercicio. Si necesitas otro servidor para pruebas, configura `MONGODB_TEST_URI`; de lo contrario se usa `MONGODB_URI` o la conexión local.
 
 Conserva `module.exports = app` y el arranque dentro de `require.main === module`. En cada endpoint usa `process.env.MONGODB_URI` y `process.env.MONGODB_DB`, como en los ejemplos, para que las pruebas puedan elegir su base temporal. Cierra siempre la conexión en `finally`.
 

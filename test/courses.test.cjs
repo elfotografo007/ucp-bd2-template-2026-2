@@ -2,7 +2,7 @@ const { test, before, beforeEach, after } = require('node:test');
 const assert = require('node:assert/strict');
 const request = require('supertest');
 
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const { randomUUID } = require('node:crypto');
 
 let api;
@@ -118,39 +118,77 @@ test('DELETE elimina solo el curso indicado y responde sin cuerpo', async () => 
 
 for (const method of ['get', 'put', 'delete']) {
   test(`${method.toUpperCase()} devuelve 404 JSON si el curso no existe`, async () => {
-    let pending = api[method]('/courses/no-existe');
+    let pending = api[method]('/courses/507f1f77bcf86cd799439099');
     if (method === 'put') pending = pending.send({ ...course, students: [] });
     await pending.expect(404).expect('Content-Type', /json/).expect(errorJson);
   });
 }
 
-const invalidBodies = [
-  ['nombre ausente', { description: '', students: [] }],
-  ['nombre vacío', { ...course, name: '  ', students: [] }],
-  ['nombre no string', { ...course, name: 123, students: [] }],
-  ['descripción ausente', { name: 'Curso', students: [] }],
-  ['descripción no string', { ...course, description: 123, students: [] }],
-  ['students no es arreglo', { ...course, students: {} }],
-  ['estudiante sin ID', { ...course, students: [{ name: 'Ana', email: 'a@example.com' }] }],
-  ['estudiante sin nombre', { ...course, students: [{ id: 's1', email: 'a@example.com' }] }],
-  ['email vacío', { ...course, students: [{ ...student, email: ' ' }] }],
-  ['estudiante nulo', { ...course, students: [null] }],
-];
+// Insertar directamente en MongoDB evita depender del endpoint POST.
+test('GET /courses devuelve todos los documentos de MongoDB con sus estudiantes', async () => {
+  await db.collection('courses').insertMany([
+    {
+      _id: new ObjectId('507f1f77bcf86cd799439011'),
+      name: 'Bases de datos',
+      description: 'Documentos en MongoDB',
+      students: [{ id: 's1', name: 'Ana', email: 'ana@example.com' }],
+    },
+    {
+      _id: new ObjectId('507f1f77bcf86cd799439012'),
+      name: 'Programación',
+      description: 'Introducción a Node.js',
+      students: [],
+    },
+  ]);
 
-for (const [label, body] of invalidBodies) {
-  test(`PUT rechaza ${label} sin modificar el curso`, async () => {
-    const saved = await create({ ...course, students: [student] });
-    await api.put(`/courses/${saved.id}`).send(body)
-      .expect(400).expect('Content-Type', /json/).expect(errorJson);
-    const read = await api.get(`/courses/${saved.id}`).expect(200);
-    assert.deepEqual(read.body, saved);
+  const response = await api.get('/courses').expect(200).expect('Content-Type', /json/);
+  assert.ok(Array.isArray(response.body));
+  // El contrato no exige un orden específico para listar.
+  const items = response.body.sort((a, b) => a.id.localeCompare(b.id));
+  assert.deepEqual(items, [
+    {
+      id: '507f1f77bcf86cd799439011',
+      name: 'Bases de datos',
+      description: 'Documentos en MongoDB',
+      students: [{ id: 's1', name: 'Ana', email: 'ana@example.com' }],
+    },
+    {
+      id: '507f1f77bcf86cd799439012',
+      name: 'Programación',
+      description: 'Introducción a Node.js',
+      students: [],
+    },
+  ]);
+});
+
+test('GET /courses/:id devuelve el documento solicitado de MongoDB', async () => {
+  await db.collection('courses').insertMany([
+    {
+      _id: new ObjectId('507f1f77bcf86cd799439011'),
+      name: 'Otro curso',
+      description: '',
+      students: [],
+    },
+    {
+      _id: new ObjectId('507f1f77bcf86cd799439012'),
+      name: 'Curso solicitado',
+      description: 'Estudiantes embebidos',
+      students: [
+        { id: 's1', name: 'Ana', email: 'ana@example.com' },
+        { id: 's2', name: 'Luis', email: 'luis@example.com' },
+      ],
+    },
+  ]);
+
+  const response = await api.get('/courses/507f1f77bcf86cd799439012')
+    .expect(200).expect('Content-Type', /json/);
+  assert.deepEqual(response.body, {
+    id: '507f1f77bcf86cd799439012',
+    name: 'Curso solicitado',
+    description: 'Estudiantes embebidos',
+    students: [
+      { id: 's1', name: 'Ana', email: 'ana@example.com' },
+      { id: 's2', name: 'Luis', email: 'luis@example.com' },
+    ],
   });
-}
-
-test('PUT exige students para reemplazar el curso completo', async () => {
-  const saved = await create();
-  await api.put(`/courses/${saved.id}`).send(course)
-    .expect(400).expect('Content-Type', /json/).expect(errorJson);
-  const read = await api.get(`/courses/${saved.id}`).expect(200);
-  assert.deepEqual(read.body, saved);
 });
