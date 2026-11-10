@@ -82,7 +82,7 @@ docker run --detach \
   mongodb/mongodb-community-server:9.0.4-ubuntu2204
 ```
 
-Usamos la imagen de MongoDB `mongodb/mongodb-community-server:9.0.4-ubuntu2204`. Fijamos MongoDB 9.0.4 con la variante Ubuntu 22.04. Esta etiqueta corresponde a la imagen publicada como `latest` al 9 de noviembre de 2026; el repositorio no publica una etiqueta `9.0.4` sin sufijo.
+Usamos la imagen de MongoDB `mongodb/mongodb-community-server:9.0.4-ubuntu2204`.
 
 El puerto 27017 del contenedor queda disponible en el 27017 de tu máquina. El volumen conserva los datos entre reinicios. Este entorno de práctica no usa autenticación y solo se publica en la interfaz local.
 
