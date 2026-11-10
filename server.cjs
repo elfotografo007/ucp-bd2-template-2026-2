@@ -2,6 +2,7 @@
 // Iniciar el servidor: pnpm exec node --watch server.cjs
 
 const express = require('express');
+const { ObjectId } = require('mongodb');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,6 +19,8 @@ app.get('/courses', (req, res) => {
 app.get('/courses/:id', (req, res) => {
   console.log(req.params.id);
   // TODO: buscar req.params.id y retornar el curso (200) o no encontrado (404).
+  // Pista: req.params.id es un string, pero MongoDB guarda _id como ObjectId.
+  // Usa { _id: new ObjectId(req.params.id) } como filtro de búsqueda.
   res.status(501).json({ message: 'Consultar curso: pendiente de implementar' });
 });
 
