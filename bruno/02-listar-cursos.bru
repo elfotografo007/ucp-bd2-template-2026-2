@@ -1,0 +1,17 @@
+meta {
+  name: 02 Listar cursos
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/courses
+  body: none
+  auth: none
+}
+
+tests {
+  test("Estado HTTP esperado", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+}

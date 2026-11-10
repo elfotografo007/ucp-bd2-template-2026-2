@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="340" viewBox="0 0 900 340" role="img" aria-labelledby="title desc">
+<title id="title">Cursos y estudiantes</title><desc id="desc">Un Course contiene cero o más Student en students, un arreglo Student[] inicialmente vacío.</desc>
+<rect width="900" height="340" fill="#f8fafc"/>
+<g fill="white" stroke="#334155" stroke-width="2"><rect x="40" y="60" width="350" height="230" rx="8"/><rect x="550" y="60" width="310" height="230" rx="8"/><path d="M40 115H390 M550 115H860"/></g>
+<g font-family="Arial, sans-serif" fill="#0f172a"><text x="215" y="96" text-anchor="middle" font-size="24" font-weight="bold">Course</text><text x="705" y="96" text-anchor="middle" font-size="24" font-weight="bold">Student</text></g>
+<g font-family="monospace" font-size="19" fill="#334155"><text x="60" y="153">+ id: String</text><text x="60" y="190">+ name: String</text><text x="60" y="227">+ description: String</text><text x="60" y="264">+ students: Student[] = []</text><text x="570" y="153">+ id: String</text><text x="570" y="190">+ name: String</text><text x="570" y="227">+ email: String</text></g>
+<path d="M390 180L405 171L420 180L405 189Z" fill="#334155"/><path d="M420 180H550" stroke="#334155" stroke-width="2"/>
+<g font-family="Arial, sans-serif" font-size="16" fill="#334155"><text x="402" y="160">1</text><text x="518" y="160">0..*</text><text x="470" y="210" text-anchor="middle">students</text><text x="450" y="325" text-anchor="middle">Composición: estudiantes embebidos dentro del curso</text></g></svg>

@@ -1,0 +1,35 @@
+meta {
+  name: 04 Actualizar curso
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/courses/{{courseId}}
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "Bases de datos II actualizado",
+    "description": "Bases documentales",
+    "students": [
+      {
+        "id": "student-1",
+        "name": "Ana María",
+        "email": "ana@example.com"
+      }
+    ]
+  }
+}
+
+tests {
+  test("Estado HTTP esperado", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+}

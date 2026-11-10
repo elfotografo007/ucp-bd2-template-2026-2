@@ -1,0 +1,41 @@
+meta {
+  name: 01 Crear curso
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/courses
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "Bases de datos II",
+    "description": "Bases documentales",
+    "students": [
+      {
+        "id": "student-1",
+        "name": "Ana García",
+        "email": "ana@example.com"
+      }
+    ]
+  }
+}
+
+script:post-response {
+  if (res.getStatus() === 201) {
+    bru.setVar("courseId", res.getBody().id);
+  }
+}
+
+tests {
+  test("Estado HTTP esperado", function () {
+    expect(res.getStatus()).to.equal(201);
+  });
+}
