@@ -240,6 +240,8 @@ docker exec ucp-mongo mongosh ucp_courses --quiet --eval 'db.courses.find().toAr
 
 ## 9. Probar todos los endpoints con Bruno
 
+Descarga e instala [Bruno](https://www.usebruno.com/downloads).
+
 1. Abre Bruno y selecciona **Open Collection**.
 2. Abre la carpeta [`bruno`](bruno) de este repositorio.
 3. Selecciona el entorno **Local** (`baseUrl = http://localhost:3000`).
